@@ -1,4 +1,4 @@
-Cyber-Physical Digital Twin for Autonomous Surface Finishing in Multi-Robot Hybrid Manufacturing
+“Digital Twin and State Estimation for a Variable-Speed Polishing Machine”.
 
 Project Overview
 This repository contains the software framework and digital twin architecture designed to elevate a variable-speed metallographic polishing device into an intelligent, networked asset for multi-robot hybrid manufacturing cells. 
