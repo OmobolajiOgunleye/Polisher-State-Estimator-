@@ -1,13 +1,13 @@
 """
 kalman_filter.py
-================
+
 
 A tiny, dependency-free Linear Kalman Filter for estimating the angle and
 angular velocity of a rotating polishing wheel from a single noisy angle
 measurement (e.g. an incremental encoder).
 
 Design goals
-------------
+
 * Hardware-agnostic: the filter knows nothing about encoders, motors,
   plotting or simulation. It only receives ``dt`` and a measured angle.
 * Portable: all 2x2 matrix algebra is written out as plain scalar maths,
@@ -17,11 +17,11 @@ Design goals
   irregular loop timing is handled correctly.
 
 State vector
-------------
+
     x = [ angle (rad), angular velocity (rad/s) ]^T
 
 Measurement
------------
+
     z = measured angle (rad)   -- continuous / "unwrapped", NOT limited to 0..2*pi
 """
 
@@ -32,7 +32,7 @@ class PolisherKalmanFilter:
     """Two-state (angle, angular velocity) Linear Kalman Filter.
 
     The matrices of the filter, in plain language
-    ---------------------------------------------
+   -
     F  (state transition, 2x2)
         "How the wheel moves by itself in ``dt`` seconds."
         ``F = [[1, dt], [0, 1]]`` means: new angle = old angle + speed * dt,
@@ -108,9 +108,7 @@ class PolisherKalmanFilter:
         self.innovation = 0.0                   # measured - predicted angle (rad)
         self.innovation_variance = self.r       # S = H P H^T + R (rad^2)
 
-    # ------------------------------------------------------------------ #
-    # Core filter steps
-    # ------------------------------------------------------------------ #
+   
     def predict(self, dt):
         """Propagate the state and covariance forward by ``dt`` seconds.
 
@@ -170,10 +168,8 @@ class PolisherKalmanFilter:
         self.predict(dt)
         return self.update(measured_angle)
 
-    # ------------------------------------------------------------------ #
-    # Convenience read-outs
-    # ------------------------------------------------------------------ #
-    @property
+  
+ 
     def rpm(self):
         """Estimated wheel speed in revolutions per minute."""
         return self.velocity * 60.0 / (2.0 * math.pi)
