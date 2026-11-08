@@ -1,6 +1,6 @@
 """
 main.py
-=======
+
 
 Simulation and visualisation for the Variable-Speed Metallographic Polishing
 Device State Estimator.
@@ -15,7 +15,7 @@ EMI). The Kalman filter in ``kalman_filter.py`` estimates the speed from those
 noisy angles only.
 
 Usage:
-    python main.py                         # show interactive window
+    python main.py                         
     python main.py --save assets/result.png --no-show
 """
 
@@ -27,9 +27,7 @@ import numpy as np
 
 from kalman_filter import PolisherKalmanFilter
 
-# --------------------------------------------------------------------------- #
-# Simulation parameters
-# --------------------------------------------------------------------------- #
+
 DT = 0.01                    # s, 100 Hz loop
 DURATION = 10.0              # s
 T_LOAD_ON = 3.0              # s, sample pressed against the wheel
@@ -95,14 +93,14 @@ def run_simulation():
     t = np.arange(0.0, DURATION + DT / 2, DT)
     true_angle, true_speed = simulate_true_wheel(t)
 
-    # --- "Sensor": true angle plus heavy Gaussian noise ------------------- #
+    # Sensor: true angle plus heavy Gaussian noise 
     noisy_angle = true_angle + rng.normal(0.0, ANGLE_NOISE_STD, size=t.shape)
 
-    # --- Naive speed: finite difference of the noisy angle ---------------- #
+    # Naive speed: finite difference of the noisy angle 
     raw_speed = np.full_like(t, np.nan)
     raw_speed[1:] = np.diff(noisy_angle) / np.diff(t)
 
-    # --- Kalman filter loop (this is the part that runs on the MCU) ------- #
+    # Kalman filter loop (this is the part that runs on the MCU) 
     kf = PolisherKalmanFilter(process_noise_q=KF_Q,
                               measurement_noise_r=KF_R,
                               initial_angle=noisy_angle[0],
