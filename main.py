@@ -6,9 +6,9 @@ Simulation and visualisation for the Variable-Speed Metallographic Polishing
 Device State Estimator.
 
 Scenario (10 s at 100 Hz):
-    * 0.0 s  : wheel spinning at 50 rad/s (~478 RPM)
-    * 3.0 s  : heavy sample pressed on the wheel -> speed drags down to 15 rad/s
-    * 7.0 s  : sample lifted -> motor recovers to 50 rad/s
+    0.0 s  : wheel spinning at 50 rad/s (~478 RPM)
+    3.0 s  : heavy sample pressed on the wheel -> speed drags down to 15 rad/s
+    7.0 s  : sample lifted -> motor recovers to 50 rad/s
 
 The "encoder" returns the true angle plus heavy Gaussian noise (cheap sensor /
 EMI). The Kalman filter in ``kalman_filter.py`` estimates the speed from those
@@ -104,7 +104,7 @@ def run_simulation():
     kf = PolisherKalmanFilter(process_noise_q=KF_Q,
                               measurement_noise_r=KF_R,
                               initial_angle=noisy_angle[0],
-                              initial_velocity=0.0,        # deliberately unknown
+                              initial_velocity=0.0,     # deliberately unknown
                               initial_velocity_std=60.0)
 
     kf_speed = np.zeros_like(t)
@@ -112,7 +112,7 @@ def run_simulation():
     kf_speed[0], kf_angle[0] = kf.velocity, kf.angle
 
     for k in range(1, len(t)):
-        dt = t[k] - t[k - 1]                 # on hardware: measured loop time
+        dt = t[k] - t[k - 1]          # on hardware: measured loop time
         kf.predict(dt)
         kf.update(noisy_angle[k])
         kf_angle[k], kf_speed[k] = kf.angle, kf.velocity
@@ -184,6 +184,7 @@ def main():
     args = parser.parse_args()
 
     data = run_simulation()
+   
 
     # Ignore the first 0.5 s so the filter's start-up convergence does not
     # dominate the error figures.
