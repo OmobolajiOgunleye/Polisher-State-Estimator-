@@ -6,7 +6,7 @@ noisy encoder angle. It runs on synthetic data today and is structured so that
 moving to an ESP32 / Arduino / MicroPython board only requires changing the
 data input and the noise tuning numbers.
 
-![Result](assets/kalman_result.png)
+# Result as shown in file: kalman_result.png
 
 Metric (10 s run, 100 Hz, after 0.5 s start-up) ,  Speed RMSE 
 
