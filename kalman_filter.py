@@ -2,18 +2,18 @@
 kalman_filter.py
 
 
-A tiny, dependency-free Linear Kalman Filter for estimating the angle and
+A dependent-free Linear Kalman Filter for estimating the angle and
 angular velocity of a rotating polishing wheel from a single noisy angle
 measurement (e.g. an incremental encoder).
 
 Design goals
 
-* Hardware-agnostic: the filter knows nothing about encoders, motors,
+Hardware-agnostic: the filter knows nothing about encoders, motors,
   plotting or simulation. It only receives ``dt`` and a measured angle.
-* Portable: all 2x2 matrix algebra is written out as plain scalar maths,
+Portable: all 2x2 matrix algebra is written out as plain scalar maths,
   so this file ports line-by-line to C++ (Arduino / ESP32) or runs as-is
   on MicroPython, where NumPy is not available.
-* Variable time step: ``predict(dt)`` takes ``dt`` on every call, so
+Variable time step: ``predict(dt)`` takes ``dt`` on every call, so
   irregular loop timing is handled correctly.
 
 State vector
@@ -100,13 +100,13 @@ class PolisherKalmanFilter:
         self.velocity = float(initial_velocity)
 
         # Covariance P = [[p00, p01], [p01, p11]].
-        self.p00 = self.r                       # trust the first reading to within R
+        self.p00 = self.r  # trust the first reading to within R
         self.p01 = 0.0
         self.p11 = float(initial_velocity_std) ** 2
 
         # Diagnostics from the most recent update (useful for load detection).
-        self.innovation = 0.0                   # measured - predicted angle (rad)
-        self.innovation_variance = self.r       # S = H P H^T + R (rad^2)
+        self.innovation = 0.0   # measured - predicted angle (rad)
+        self.innovation_variance = self.r   # S = H P H^T + R (rad^2)
 
    
     def predict(self, dt):
@@ -122,6 +122,7 @@ class PolisherKalmanFilter:
 
         # x = F x  (angle advances by velocity * dt; velocity unchanged)
         self.angle += self.velocity * dt
+      
 
         # P = F P F^T + Q, expanded by hand for the 2x2 case.
         p00, p01, p11 = self.p00, self.p01, self.p11
